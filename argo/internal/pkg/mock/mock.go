@@ -1,10 +1,11 @@
 package mock
 
 import (
+	"os"
+
 	gonanoid "github.com/matoous/go-nanoid/v2"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"os"
 )
 
 const DNSENV = "ARGO_DATABASE_URL"

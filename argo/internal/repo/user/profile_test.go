@@ -2,12 +2,14 @@ package user
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
+	"gorm.io/gorm"
+
 	"github.com/swanhubx/swanlab-helper/argo/internal/pkg/mock"
 	"github.com/swanhubx/swanlab-helper/argo/internal/pkg/model"
-	"gorm.io/gorm"
-	"testing"
 )
 
 type UserProfileRepoSuite struct {
