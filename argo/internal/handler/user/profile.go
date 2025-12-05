@@ -63,8 +63,7 @@ func (h *ProfileHandler) UpdateUserProfile(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, &userApi.UpdateUserProfileResponse{
-		Username: profile.User.Username,
-		Name:     profile.Name,
-		Avatar:   profile.Avatar,
+		Name:   profile.Name,
+		Avatar: profile.Avatar,
 	})
 }

@@ -7,7 +7,6 @@ type UpdateUserProfileRequest struct {
 }
 
 type UpdateUserProfileResponse struct {
-	Username string `binding:"required" json:"username"`
-	Name     string `json:"name"`
-	Avatar   string `json:"avatar"`
+	Name   string `json:"name"`
+	Avatar string `json:"avatar"`
 }
