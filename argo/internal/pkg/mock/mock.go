@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-const DNSENV = "ARGO_DATABASE_URL"
+const DNSENV = "ARGO_DATABASE_TEST_URL"
 
 func NewMySQL() *gorm.DB {
 	dns := os.Getenv(DNSENV)
