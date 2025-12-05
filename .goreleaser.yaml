@@ -10,8 +10,9 @@ builds:
   - id: argo-server
     # ✅ 这里是你的代码入口，对应 go build ./argo/cmd
     # GoReleaser 会自动寻找该目录下的 main 包
-    main: ./argo/cmd
-    
+    dir: ./argo
+    main: ./cmd
+
     # 生成的二进制文件名
     binary: argo-server
     
