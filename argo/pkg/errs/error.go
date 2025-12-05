@@ -111,7 +111,7 @@ func (e *Error) Error() string {
 // 使用 ctx.JSON() 方法设置响应状态码和响应体
 func (e *Error) Response(ctx *gin.Context) {
 	slog.ErrorContext(ctx, e.Error())
-	ctx.Set("errs", &e)
+	//ctx.Set("errs", &e)
 	err := ctx.Error(e)
 	if err != nil {
 		slog.Error("Can't Set error to gin.Context")
