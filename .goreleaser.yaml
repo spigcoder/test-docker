@@ -1,0 +1,50 @@
+project_name: argo-tool # 自定义你的项目名
+
+builds:
+  - id: argo-build           # (可选) 给构建起个ID
+    # 👇 关键修改在这里：指定编译入口为 ./argo 目录
+    main: ./argo
+
+    # 生成的二进制文件名 (例如 argo.exe 或 argo)
+    binary: argo
+
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+
+# 打包配置保持不变，或者根据需要调整名称
+archives:
+  - format: tar.gz
+    # 如果你是 Windows，建议覆盖为 zip
+    format_overrides:
+      - goos: windows
+        format: zip
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+
+    # 👇 如果你只想包含根目录的 README，或者 argo 目录下的特定文件，在这里调整
+    files:
+      - README.md
+      - LICENSE
+      # - ./argo/config.example.yaml # 例如：包含 argo 目录下的示例配置
+
+checksum:
+  name_template: 'checksums.txt'
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'

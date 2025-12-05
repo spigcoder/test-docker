@@ -39,7 +39,7 @@ jobs:
           --health-retries=5
 
     env:
-      ARGO_DATABASE_URL: "root:root@tcp(127.0.0.1:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
+      ARGO_DATABASE_TEST_URL: "root:root@tcp(127.0.0.1:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
 
     steps:
       - name: Checkout code
