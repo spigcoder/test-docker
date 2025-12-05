@@ -42,7 +42,12 @@ func loadEnvFile(filepath string) {
 	if err != nil {
 		return
 	}
-	defer file.Close()
+	defer func() {
+		err := file.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -56,7 +61,10 @@ func loadEnvFile(filepath string) {
 			key := strings.TrimSpace(parts[0])
 			val := strings.TrimSpace(parts[1])
 			if _, exists := os.LookupEnv(key); !exists {
-				os.Setenv(key, val)
+				err := os.Setenv(key, val)
+				if err != nil {
+					fmt.Println(err)
+				}
 			}
 		}
 	}
