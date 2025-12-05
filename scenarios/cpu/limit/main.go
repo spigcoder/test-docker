@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/moby/moby/api/pkg/stdcopy"
 	"github.com/moby/moby/client"
 	"io"
@@ -14,8 +13,9 @@ import (
 )
 
 const (
-	demoImage        = "docker.io/library/alpine"
-	rootFsLimitBytes = 128
+	MiB          = 1024 * 1024
+	demoImage    = "docker.io/library/python:3.12-alpine"
+	cpuLimitNano = 1_000_000_000 // 1 vCPU
 )
 
 func main() {
@@ -29,30 +29,31 @@ func main() {
 		log.Fatalf("创建 Docker 客户端失败: %v", err)
 	}
 	defer cli.Close()
-	//拉去镜像
+
 	resp, err := cli.ImagePull(ctx, demoImage, client.ImagePullOptions{})
 	if err != nil {
 		panic(err)
 	}
-	io.Copy(os.Stdout, resp)
-	fmt.Println("Pulled image successfully")
 	defer resp.Close()
-	// 设置 --storage-opt size=10M 限制可写层的大小
-	hostConfig := &container.HostConfig{}
-	hostConfig.StorageOpt = map[string]string{
-		"size": fmt.Sprintf("%dM", rootFsLimitBytes),
-	}
-	// 创建容器
+	_, err = io.Copy(io.Discard, resp)
+
 	res, err := cli.ContainerCreate(context.Background(), client.ContainerCreateOptions{
-		Image: "alpine",
+		Image: demoImage,
 		Config: &container.Config{
 			Tty: false,
+			Cmd: []string{"sleep", "3600"},
 		},
-		HostConfig: hostConfig,
-		Name:       "test-ds",
+		HostConfig: &container.HostConfig{
+			Resources: container.Resources{
+				CPUPercent: 100000,
+				CPUQuota:   200000,
+			},
+		},
+		Name: "test-ds",
 	})
+
 	if err != nil {
-		panic(err)
+		log.Fatalf("执行 CPU 限额探测失败: %v", err)
 	}
 	if _, err := cli.ContainerStart(context.Background(), res.ID, client.ContainerStartOptions{}); err != nil {
 		panic(err)

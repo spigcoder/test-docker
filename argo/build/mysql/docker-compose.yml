@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  mysql_test:
+    image: mysql:latest  # 使用最新版本
+    container_name: mysql_test_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root          # Root 密码
+      MYSQL_DATABASE: test_db            # 初始化创建的数据库名
+      MYSQL_USER: test_user              # 测试账号
+      MYSQL_PASSWORD: test_password      # 测试密码
+    ports:
+      - "3306:3306"                      # 映射端口
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
