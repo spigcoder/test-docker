@@ -1,44 +1,62 @@
+# 您的项目名称，用于 release 文件命名
 project_name: argo-tool
 
+# ====================================
+# 1. 编译配置 (Builds)
+# ====================================
 builds:
-  - id: argo-build
+  - id: argo-binary
+    # 📢 关键修改：将入口指向 /argo/cmd 目录
     main: ./argo/cmd
-
-    binary: argo
-
+    # 编译后二进制文件的名称
+    binary: argo-server
+    
+    # 禁用 CGO，确保静态链接，提高跨平台兼容性
     env:
       - CGO_ENABLED=0
+    
+    # 定义需要交叉编译的操作系统
     goos:
       - linux
       - windows
-      - darwin
+      - darwin # macOS
+      # 如果需要类似 etcd 图片中的 ppc64le/s390x，请添加到这里
+    
+    # 定义需要交叉编译的架构
     goarch:
-      - amd64
-      - arm64
+      - amd64 # 兼容 x86_64
+      - arm64 # 兼容 ARM 架构 (M1/M2 Mac, 部分 Linux 服务器)
 
+# ====================================
+# 2. 打包配置 (Archives)
+# ====================================
 archives:
-  - format: tar.gz
+  - id: release-archives
+    # 📢 关键修改：使用 - 分割的命名模板，格式类似于 etcd
+    # 产物格式：argo-tool_v1.0.0_linux_amd64.tar.gz
+    name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+
+    # 默认使用 tar.gz
+    format: tar.gz
+    
+    # Windows 平台覆盖为 zip 格式
     format_overrides:
       - goos: windows
         format: zip
-    name_template: >-
-      {{ .ProjectName }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
 
+    # 压缩包内包含的文件
     files:
       - README.md
       - LICENSE
 
-checksum:
-  name_template: 'checksums.txt'
-
+# ====================================
+# 3. 其他配置 (Changelog & Release)
+# ====================================
+# 自动生成 Release Note / Changelog
 changelog:
   sort: asc
-  filters:
-    exclude:
-      - '^docs:'
-      - '^test:'
+
+# Release 到 GitHub 的配置
+releases:
+  # 使用自动生成的 Release Notes
+  prerelease: auto
