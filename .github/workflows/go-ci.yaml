@@ -7,18 +7,18 @@ on:
     branches: [ "main" ]
 
 jobs:
-  lint:
-    name: Lint (Argo)
+  golangci:
+    name: lint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v6
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
         with:
-          version: latest
-          working-directory: argo
+          go-version: 'go1.25.4'
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.6
 
   test:
     name: Test Components
