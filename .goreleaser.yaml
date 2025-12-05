@@ -1,3 +1,4 @@
+version: 2
 # 您的项目名称，用于 release 文件命名
 project_name: argo-tool
 
