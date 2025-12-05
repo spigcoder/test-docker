@@ -58,6 +58,4 @@ changelog:
   sort: asc
 
 # Release 到 GitHub 的配置
-releases:
-  # 使用自动生成的 Release Notes
-  prerelease: auto
+releases: {}
