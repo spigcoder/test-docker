@@ -48,12 +48,6 @@ func (s *ProfileHandlerSuite) TestUpdateUserProfile_OK() {
 				UserID: uid,
 				Name:   "Test User",
 				Avatar: "https://test.swanlab.cn/avatar.png",
-				User: model.User{
-					BaseModel: model.BaseModel{
-						ID: uid,
-					},
-					Username: "testuser",
-				},
 			}, nil
 		},
 	}
