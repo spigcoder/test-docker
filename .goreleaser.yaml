@@ -1,9 +1,18 @@
+# 必须指定版本为 2
 version: 2
+
 project_name: argo-tool
 
+# ====================================
+# 1. 编译配置 (Builds)
+# ====================================
 builds:
-  - id: argo-binary
+  - id: argo-server
+    # ✅ 这里是你的代码入口，对应 go build ./argo/cmd
+    # GoReleaser 会自动寻找该目录下的 main 包
     main: ./argo/cmd
+    
+    # 生成的二进制文件名
     binary: argo-server
     
     env:
@@ -13,25 +22,41 @@ builds:
       - linux
       - windows
       - darwin
+    
     goarch:
       - amd64
       - arm64
 
+# ====================================
+# 2. 打包配置 (Archives)
+# ====================================
 archives:
-  - id: release-archives
-    name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
-
-    format: tar.gz
+  - format: tar.gz
+    # 让文件名看起来像 etcd 那样规范
+    name_template: >-
+      {{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}
     
     format_overrides:
       - goos: windows
         format: zip
 
+    # 如果你的根目录有这些文件，就包含进去；没有就注释掉
     files:
       - README.md
       - LICENSE
 
+# ====================================
+# 3. GitHub 发布配置
+# ====================================
+# 🚨 之前报错就是因为用了 'releases:'，V2 版本请使用 'github:'
+github:
+  # 自动根据 Tag 是否包含 -rc / -beta 等后缀来标记为 "Prerelease"
+  prerelease: auto
+
+# 生成更新日志
 changelog:
   sort: asc
-
-releases: {}
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
