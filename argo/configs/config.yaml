@@ -3,3 +3,5 @@ addr: localhost:8080
 db:
   host: "localhost"
   database: "test1"
+server:
+  port: 8080
