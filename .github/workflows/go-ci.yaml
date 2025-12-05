@@ -47,7 +47,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
-          go-version: 'go1.24.4'
+          go-version: 'go1.25.4'
           cache: false
 
       - name: test argo
