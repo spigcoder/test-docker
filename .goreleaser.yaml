@@ -29,7 +29,6 @@ archives:
         format: zip
     files:
       - README.md
-      - LICENSE
 
 release:
   prerelease: auto
