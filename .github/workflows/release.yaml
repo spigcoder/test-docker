@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     tags:
-      - "*"
+      - "argo-v*"
 
 permissions:
   contents: write
