@@ -13,12 +13,15 @@ import (
 )
 
 const (
-	MiB          = 1024 * 1024
-	demoImage    = "stress"
+	MiB       = 1024 * 1024
+	demoImage = "stress"
 )
 
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lmicroseconds)
+	if _, err := os.Open("./name"); err != nil {
+		log.Fatal(err)
+	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
 	defer cancel()
