@@ -3,9 +3,6 @@ project_name: argo-tool
 
 builds:
   - id: argo-server
-    # 关于 dir 的说明：
-    # 如果你的 go.mod 在根目录，请删除下面这行 dir: ./argo，并将 main 改为 ./argo/cmd
-    # 如果你的 go.mod 在 argo 目录下，请保留下面这行
     dir: ./argo
     main: ./cmd
 

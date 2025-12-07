@@ -3,6 +3,8 @@ name: test-on-push-main
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "argo/**"
   pull_request:
     branches: [ "main" ]
 
